@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>看新闻赚红包</title>
+		<meta charset="utf-8" />
+		<link rel="dns-prefetch" href="//yun.tuisnake.com">
+		<script type="text/javascript">
+			! function(e, i) {
+				var t = e.documentElement,
+					n = navigator.userAgent.match(/iphone|ipod|ipad/gi),
+					a = n ? Math.min(i.devicePixelRatio, 3) : 1,
+					m = "orientationchange" in window ? "orientationchange" : "resize";
+				t.dataset.dpr = a;
+				for(var d, l, c = !1, o = e.getElementsByTagName("meta"), r = 0; r < o.length; r++) l = o[r], "viewport" == l.name && (c = !0, d = l);
+				if(c) d.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no";
+				else {
+					var o = e.createElement("meta");
+					o.name = "viewport", o.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no", t.firstElementChild.appendChild(o)
+				}
+				var s = function() {
+					var e = t.clientWidth;
+					e / a > 640 && (e = 640 * a), window.remScale = e / 640, t.style.fontSize = 200 * (e / 640) + "px"
+				};
+				s(), e.addEventListener && i.addEventListener(m, s, !1)
+			}(document, window);
+		</script>
+		<link rel="stylesheet" href="./css/promote.css">
+	</head>	
+	<body>
+		<script src="https://s22.cnzz.com/z_stat.php?id=1273455487&web_id=1273455487" language="JavaScript"></script><!--zhishun520-->
+		<script src="https://s19.cnzz.com/z_stat.php?id=1273468288&web_id=1273468288" language="JavaScript"></script><!--hzmiaokun-->
+		<div class="btn clickArea" data-href="https://zhishun520.com/app-debug.apk"></div>
+		<div class="packContainer"></div>
+		<div class="light"></div>
+		<div class="lunbo">
+			<div class="info1"></div>
+			<div class="info2"></div>
+			<div class="info3"></div>
+			<div class="info4"></div>
+		</div>
+		<div class="float">
+			<div class="btn3 clickArea"></div>
+		</div>
+		<script type="text/javascript" src="./js/loading.js"></script>
+		<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
+		<script src="./js/linkedME/log.js"></script>	
+		<script type="text/javascript" src="./js/downApp.js"></script>
+		<script>
+			$(".clickArea").on("click",function(){
+				window.location.href = $(".clickArea").attr("data-href");
+				var _czc = _czc || [];
+				//下载链接
+				_czc.push(["_trackPageview", "/app-debug.apk","https://zhishun520.com"]);/*zhishun520*/
+				_czc.push(["_trackPageview", "/app-debug.apk","https://hzmiaokun.com"]);/*hzmiaokun*/
+				//事件
+				_czc.push(["_trackEvent", "网页","H5页面下载","早头条"]);
+			});
+/*			$(".clickArea").click(function(){
+	            var $eleForm = $("<form method='get'></form>");
+	
+	            $eleForm.attr("action","http://bd-m.qutoutiao.net/download/qutoutiao_567_apkfile");
+	
+	            $(document.body).append($eleForm);
+	
+	            //提交表单，实现下载
+	            $eleForm.submit();
+	        });*/
+		</script>
+	</body>
+</html>

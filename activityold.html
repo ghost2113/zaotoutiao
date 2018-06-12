@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>活动中间页</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/activity.css" />
+    <script type="text/javascript">    	
+   		document.addEventListener('plusready', function(){
+   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+   			
+   		});   		
+    </script>
+</head>
+<body>
+<!--	<header id="header">
+		<a href="javascript:;"></a>
+		<div class="title">月入过万的秘籍，都在这里了</div>
+		<a href="javascript:;"></a>
+	</header>-->
+	<!--背景图-->
+	<!--<div class="actiBg"><img src="./img/activityBg.jpg" alt="" /></div>-->
+	<section id="main">
+		
+		<div class="actiText1">
+			<img src="./img/actiText1.png" alt="" />
+		</div>
+		<div class="actiText2">
+			<img src="./img/actiText2.png" alt="" />
+		</div>
+		<p>活动时间：5月1日-5月30日</p>
+		<div class="actiList">
+			<a class="actiItem" href=''><img src="./img/activity1.png" alt="error" /></a>
+			<a class="actiItem" href=''><img src="./img/activity2.png" alt="error" /></a>
+			<a class="actiItem" href=''><img src="./img/activity3.png" alt="error" /></a>
+			<a class="actiItem" href=''><img src="./img/activity4.png" alt="error" /></a>
+		</div>
+	</section>
+	<footer id="footer">
+		<div class="actiFoot actiFootL">查看赚钱攻略</div>
+		<div class="actiFoot actiFootR" onclick="shareMore()">分享给更多的人</div>
+	</footer>
+	<script type="text/javascript" src="./js/rem.js"></script>
+	<script type="text/javascript" src="./js/zepto.js"></script>
+	<script type="text/javascript">
+			//获取Url地址中userId参数
+			function getUrlParams(name) { 
+			    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //定义正则表达式 
+			    var r = window.location.search.substr(1).match(reg);  
+			    if (r != null) return unescape(r[2]); 
+			    return null; 
+			};
+			var userID = getUrlParams("userId");
+			['./mfNews.html?userId=','./mfDisciple.html?userId=','./mfSign.html?userId=','./mfTreasure.html?userId='].forEach(function(item,index){
+				$(".actiItem").eq(index).attr("href",item+userID);
+			});
+			$(".actiFootL").on("click",function(){
+				window.location.href = "strategy.html?userId="+userID;
+			})
+			 function strategy(){      			 	
+		       var u = navigator.userAgent;
+		       var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+		       var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		       if(isAndroid){
+		           /* alert('是否是Android：'+isAndroid);*/
+		           window.jsi.strategy("strategy")
+		       }else if(isiOS){
+		            /*alert('是否是iOS：'+isiOS);*/
+		           window.webkit.messageHandlers.strategy.postMessage("strategy");
+		       }
+   			}	
+   			function shareMore(){    
+		       var u = navigator.userAgent;
+		       var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+		       var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		       if(isAndroid){
+		            /*alert('是否是Android：'+isAndroid);*/
+		           /*window.android.shareMore(title,desc,urls,img,goodsPrice);*/
+		           window.jsi.shareMore("ok");
+		       }else if(isiOS){
+		            /*alert('是否是iOS：'+isiOS);*/
+		           window.webkit.messageHandlers.shareMore.postMessage("shareMore");
+		       }
+   			}	
+   			/**
+			 * 完美解决safari、微信浏览器下拉回弹效果和上拉空白的bug
+			 * @param {Object} el 滑动元素
+			 */
+			var overscroll = function(el) {
+				el.addEventListener('touchstart', function() {
+					var top = el.scrollTop
+					,totalScroll = el.scrollHeight
+					,currentScroll = top + el.offsetHeight;
+					if(top === 0) {
+						el.scrollTop = 1;
+					}else if(currentScroll === totalScroll) {
+						el.scrollTop = top - 1;
+					}
+				});
+
+				el.addEventListener('touchmove', function(evt) {
+				if(el.offsetHeight < el.scrollHeight)
+					evt._isScroller = true;
+				});
+			}
+			overscroll(document.querySelector('#main'));
+			document.body.addEventListener('touchmove', function(evt) {
+				if(!evt._isScroller) {
+					evt.preventDefault();
+				}
+			});
+	</script>
+</body>
+</html>

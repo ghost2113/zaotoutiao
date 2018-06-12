@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<style rel="stylesheet" type="text/css">
+			* {
+			  margin: 0;
+			  padding: 0;
+			  outline: none;
+			} 
+			*:not(input,textarea) {
+			  -webkit-touch-callout: inherit;
+			  -webkit-user-select: auto;
+			}
+			body {
+			  width: 100%;
+			  font-family:"微软雅黑", Arial, Helvetica, "黑体", sans-serif;
+			  -webkit-touch-callout: inherit ;
+			  -webkit-user-select: auto ;
+			}
+			#demo{
+				display:flex;
+				display:-webkit-flex;
+				flex-direction:row;
+				align-items:center;			
+			}
+		</style>
+	</head>
+	<body>
+		<div style="display:flex;height:100%;display:-webkit-flex;flex-direction:row;align-items:center;font-size:13px;color:#E73D3D;">
+			<span style="display:block;">1000</span>
+			<img style="display:block;width:16px;height:16px;margin:0 5px;" src="http://pic1.nipic.com/2008-12-15/20081215211851562_2.jpg" alt="error" />
+		</div>
+		<div style="display:flex;height:100%;display:-webkit-flex;flex-direction:row;align-items:center;font-size:13px;color:#E73D3D;">
+			+<span style="display:block;">2</span>元
+			<img style="display:block;width:16px;height:16px;margin:0 5px;" src="http://pic1.nipic.com/2008-12-15/20081215211851562_2.jpg" alt="error" />
+			+<span style="display:block;">100</span>
+			<img style="display:block;width:16px;height:16px;margin:0 5px;" src="http://pic1.nipic.com/2008-12-15/20081215211851562_2.jpg" alt="error" />
+		</div>
+	<script>
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					if(clientWidth >= 640) {
+						/*docEl.style.fontSize = '100px';*/
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					} else {
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					}
+				};
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+	</body>
+</html>

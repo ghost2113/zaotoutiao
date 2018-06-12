@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>徒弟列表</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/discList.css" />
+</head>
+<body>
+	<section id="main">		
+		<div class="banner">
+			<img src="./img/disListText1.png" alt="" />
+			<div class="getDisc">
+				<button onclick="disciple()">收徒赚大钱</button>
+			</div>
+			<span class="rules">基础收益</span>
+		</div>
+		<div class="discCon">
+			<ul class="discTab">
+				<li>未激活徒弟<span></span></li>
+				<li>有效徒弟<span></span></li>
+				<li>唤醒徒弟<span></span></li>
+			</ul>
+			<div class="discList mescroll" id="discList">
+				<!--<li>
+					<div>
+						<span class="userPhoto"><img src="img/userPhoto.jpg" alt="" /></span><span class="userName">昵称</span>
+					</div>
+					<div class="myDisc">
+						尚未成为有效徒弟
+					</div>
+				</li>-->
+			</div>	
+		</div>
+
+	</section>
+	<div class="mask" style="display:none;">
+		<div class="discRules">
+			<div class="discRulesTit">
+				活动规则
+				<span class="close"></span>
+			</div>
+			<div class="discRulesCont">
+				<p>每收一位有效徒弟奖励一次性奖励<span class="redFont">3000金币</span> 每当徒弟阅读新闻获得<span class="redFont">10金币</span>，师傅将会获得双倍奖励</p>
+				<p><strong>新增徒弟：</strong>朋友通过你分享的链接下载头条TV并登陆 </p>
+				<p><strong>有效徒弟：</strong>徒弟进贡<span class="redFont">100金币</span>时，成为你的有效徒弟</p>
+				<ul>
+					<h4  class="redFont">段位规则</h4>
+					<li><span>青铜：</span><span class="redFont">0-2</span>位有效徒弟</li>
+					<li><span>白银：</span><span class="redFont">3</span>位有效徒弟</li>
+					<li><span>黄金：</span><span class="redFont">10</span>位有效徒弟</li>
+					<li><span>白金：</span><span class="redFont">66</span>位有效徒弟</li>
+					<li><span>钻石：</span><span class="redFont">200</span>位有效徒弟</li>
+					<li><span>大师：</span><span class="redFont">400</span>位有效徒弟</li>
+					<li><span>王者：</span><span class="redFont">1000</span>位有效徒弟</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="./js/rem.js"></script>
+	<script type="text/javascript" src="./js/loading.js"></script>
+	<script type="text/javascript" src="./js/zepto.js"></script>
+	<script type="text/javascript" src="js/fastclick.js"></script>
+	<script type="text/javascript">
+			//获取Url地址中userId参数
+			function getUrlParams(name) { 
+			    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //定义正则表达式 
+			    var r = window.location.search.substr(1).match(reg);  
+			    if (r != null) return unescape(r[2]); 
+			    return null; 
+			};
+			/**
+			 * 变量
+			 */
+			var active = getUrlParams("active");
+			var userID = getUrlParams("userId");//用户userId
+			console.log("用户userId",userID);			
+			var type = "avaken";//定义请求类型;
+			var _html = '';//渲染模板
+			var page=1;//加载页数;
+			var listHeight = $(".discList").height();//列表固定高度
+			var listScrollTop = listHeight;
+			//规则弹出层
+			$(".rules").on("click",function(){
+				/*$(".mask").show();*/
+				window.location.href ="https://zhishun888.com:9443/zttH5/mfDiscEarn.html";
+			});
+			$(".close").on("click",function(){
+				$(".mask").hide();
+			});
+			//选项卡
+			$(".discTab li").on("click",function(){
+				_html = "";				
+				listScrollTop = listHeight;
+				var index = $(this).index();
+				type = ["my","effective","avaken"][index];
+				$(this).find("span").show();
+				$(this).siblings().find("span").hide();
+				$(this).addClass("active").siblings().removeClass("active");
+				updataLoad(userID,type,1);	
+				//默认图片
+				if($(".discList").html()==""){
+					$(".discList").html(
+						'<img class="noDisc" src="./img/noDisc.png" alt="" />'
+					);
+				}		
+			});
+			//数据请求和渲染
+			function updataLoad(userID,type,numPage){					
+				/*alert({"userID":userID,"type":type,"numPage":numPage});*/
+				$.ajax({
+					url:ajaxUrl+"/apprentice/list?userId="+userID+"&type="+type+"&pageNo="+numPage+"&pageSize=10",
+					type:"get",
+					async:false,
+					success:function(res){												
+						/*console.log(res);*/
+						res.data.forEach(function(item,index){
+							/*console.log({"type":type,"item":item});*/
+							switch(type){
+								case "effective":
+									_html+= 
+									'<li>'
+										+'<div class="availDisc">'
+											+'<span class="userPhoto"><img src=\"'+item.headPath+'\" alt="" /></span><div class="userInfo"><span class="userName">'+(item.nickName?item.nickName:"昵称")+'</span><span class="creatTime">'+item.apprenticeDate.substr(5,5)+'收徒</span></div>'
+										+'</div>'
+										+'<div>'
+											+'累计进贡<span class="redFont">'+item.sumGold+'</span>'
+										+'</div>'
+									+'</li>';
+									break;
+								case "my":
+									_html += 
+									'<li>'
+										+'<div>'
+											+'<span class="userPhoto"><img src=\"'+item.headPath+'\" alt="" /></span><span class="userName">'+(item.nickName?item.nickName:"昵称")+'</span>'
+										+'</div>'
+										+'<div class="myDisc">'
+											+'尚未成为有效徒弟'
+										+'</div>'
+									+'</li>';
+									break;
+								case "avaken":
+								_html += 
+									'<li>'
+										+'<div>'
+											+'<span class="userPhoto"><img src=\"'+item.headPath+'\" alt="" /></span><span class="userName">'+(item.nickName?item.nickName:"昵称")+'</span>'
+										+'</div>'
+										+'<div class="wakeDisc">'
+											+'<button onclick="wake()">唤醒</button>'
+										+'</div>'
+									+'</li>';	
+									break;
+								default:
+									break;
+							}							
+						});
+						page++;
+						$("#discList").html(_html);						
+						listScrollTop = $(".discList").scrollTop()+listHeight+50;		
+						console.log({"listScrollTop":listScrollTop,"listHeight":listHeight,"scrollTop":$(".discList").scrollTop(),"正在更新数据":"正在更新数据"});
+					},
+					error:function(error){
+						console.log(error);
+					}
+				})	
+			}	
+			//页面载入，触发单击事件模拟数据
+			$(".discTab li").eq(0).trigger("click");
+			if(active==1){
+				$(".discTab li").eq(1).trigger("click");
+			}
+			//上拉加载
+			$(".discList").scroll(function(){
+				var scrollTop = $(".discList").scrollTop();
+				/*console.log({"listHeight":listHeight,"listScrollTop":listScrollTop,"scrollTop":scrollTop});*/
+				if(listScrollTop<scrollTop){
+/*					console.log("正在更新。。。。。。");
+					console.log(type);*/
+					updataLoad(userID,type,page);
+				}
+			})
+			//唤醒徒弟
+			function wake(){    
+		       var u = navigator.userAgent;
+		       var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+		       var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		       if(isAndroid){
+		           /* alert('是否是Android：'+isAndroid);*/
+		           window.jsi.wake("ok")
+		       }else if(isiOS){
+		            /*alert('是否是iOS：'+isiOS);*/
+		           window.webkit.messageHandlers.wake.postMessage("ok");
+		       }
+			}
+			//收徒赚大钱
+			function disciple(){    
+		       var u = navigator.userAgent;
+		       var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+		       var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		       if(isAndroid){
+		            /*alert('是否是Android：'+isAndroid);*/
+		           window.jsi.disciple("ok")
+		       }else if(isiOS){
+		           /* alert('是否是iOS：'+isiOS);*/
+		           window.webkit.messageHandlers.disciple.postMessage("ok");
+		       }		       	  
+			}
+			/**
+			 * 完美解决safari、微信浏览器下拉回弹效果和上拉空白的bug
+			 * @param {Object} el 滑动元素
+			 */
+			var overscroll = function(el) {  
+			    el.addEventListener('touchstart', function() {  
+			        var top = el.scrollTop  
+			        ,totalScroll = el.scrollHeight  
+			        ,currentScroll = top + el.offsetHeight;  
+			        if(top === 0) {  
+			            el.scrollTop = 1;  
+			        }else if(currentScroll === totalScroll) {  
+			            el.scrollTop = top - 1;  
+			        }  
+			    });  
+			  
+			    el.addEventListener('touchmove', function(evt) {  
+			    if(el.offsetHeight < el.scrollHeight)  
+			        evt._isScroller = true;  
+			    });  
+			}
+			overscroll(document.querySelector('#main'));  
+			document.body.addEventListener('touchmove', function(evt) {  
+			    if(!evt._isScroller) {  
+			        evt.preventDefault();  
+			    }  
+			});  
+	</script>
+</body>
+</html>
